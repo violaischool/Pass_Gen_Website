@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Name Generator</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f3f3f3;
+    margin: 0;
+}
+
+.container {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+select, button {
+    padding: 10px;
+    margin: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#generatedName {
+    font-size: 24px;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Random Name Generator</h1>
+        <select id="nameType">
+            <option value="first">First Name</option>
+            <option value="last">Last Name</option>
+            <option value="full">Full Name</option>
+        </select>
+        <button id="generateNameButton">Generate Name</button>
+        <p id="generatedName"></p>
+    </div>
+
+    <script >
+        document.getElementById('generateNameButton').
+        addEventListener('click', async function() {
+    const nameType = document.getElementById('nameType').value;
+    const url = 'https://randomuser.me/api/';
+    
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        // Get the user's name data
+        const user = data.results[0];
+
+        let generatedName = '';
+
+        if (nameType === 'first') {
+            generatedName = user.name.first;
+        } else if (nameType === 'last') {
+            generatedName = user.name.last;
+        } else if (nameType === 'full') {
+            generatedName = `${user.name.first} ${user.name.last}`;
+        }
+
+        // Display the generated name
+        document.getElementById('generatedName').textContent = generatedName;
+    } catch (error) {
+        console.error('Error fetching name:', error);
+        document.getElementById('generatedName').textContent = 'Error fetching name, please try again!';
+    }
+});
+
+    </script>
+</body>
+</html>
